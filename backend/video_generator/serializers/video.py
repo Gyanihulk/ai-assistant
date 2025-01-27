@@ -19,7 +19,7 @@ class VideoSerializer(serializers.ModelSerializer):
 
 
 class VideoGenerationSerializer(serializers.Serializer):
-    topic = serializers.CharField(max_length=100)
+    topic = serializers.CharField(max_length=200)
     length_seconds = serializers.IntegerField()
     video_file = serializers.CharField(read_only=True)  # The generated video file path
     
@@ -50,6 +50,7 @@ class VideoGenerationSerializer(serializers.Serializer):
             image=Image.objects.create(prompt=prompt, image_url=cloudinary_url)
             print(f"saved Image {image.image_url}")
             image_filenames.append(local_image_path)
+            
             
             text_input = "Hello, this is a test for generating audio using OpenAI."
             audio_file_name = "test_audio.mp3"

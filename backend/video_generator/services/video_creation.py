@@ -4,7 +4,7 @@ import requests
 from tempfile import NamedTemporaryFile, TemporaryDirectory
 import re
 
-def setup_directory(base_path="/app/data/video_processing"):
+def setup_directory(base_path="/app/data"):
     # Create a directory for storing all image files
     dir_path = os.path.join(base_path)
     if not os.path.exists(dir_path):
@@ -47,7 +47,7 @@ def create_video_from_images(image_sources, output_video, use_local_images=False
         str: The path to the created video file.
     """
     base_dir = setup_directory()
-    
+    print(f"baseDir: {base_dir}");
     if use_local_images:
         # Treat the image_sources as local file paths
         local_image_paths = image_sources
@@ -59,7 +59,7 @@ def create_video_from_images(image_sources, output_video, use_local_images=False
     
     if local_image_paths:
         # Create a pattern for GStreamer to use the images
-        base_path = os.path.join(base_dir, "img_%d.png")  # Ensure the pattern is in the created directory
+        base_path = os.path.join(base_dir, "generated_image_%d.png")  # Ensure the pattern is in the created directory
 
     # Sanitize the output video filename
     sanitized_filename = sanitize_filename(output_video)
@@ -84,6 +84,8 @@ def create_video_from_images(image_sources, output_video, use_local_images=False
         raise Exception(f"Error in GStreamer pipeline: {process.stderr.decode('utf-8')}")
     
     return output_video_path
+
+
 
 
 def sanitize_filename(filename):
