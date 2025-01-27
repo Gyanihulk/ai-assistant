@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import SuggestionSerializer
 from .enums import SuggestionItemEnum
-from .services.prompt_generation import generate_prompts,generate_comment,analyze_post_data
+from .services.prompt_generation import generate_prompts,generate_comment,analyze_post_data,suggest_reply
 import logging
 from .models import AnalyzedPost
 logger = logging.getLogger(__name__)
@@ -35,6 +35,50 @@ def generate_suggestion(request):
 
 
 
+@api_view(['POST'])
+def generate_suggested_reply(request):
+    """
+    API to generate a suggested reply for a LinkedIn conversation.
+
+    Expected JSON body:
+    {
+        "conversation": [
+            {
+                "name": "User Name",
+                "message": "Message text"
+            },
+            ...
+        ]
+    }
+    """
+    # Get the conversation from the request body
+    conversation = request.data.get('conversation', [])
+
+    # Validate input
+    if not conversation or not isinstance(conversation, list):
+        return Response(
+            {"error": "Conversation must be a list of messages."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    try:
+        # Generate the suggested reply
+        suggested_reply = suggest_reply(conversation)
+
+        # Return the generated reply
+        return Response(
+            {
+                "message": "Suggested reply generated successfully.",
+                "suggested_reply": suggested_reply,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+    except Exception as e:
+        return Response(
+            {"error": f"Error generating suggested reply: {e}"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
 
 @api_view(['POST'])
 def generate_post_comment(request):

@@ -118,7 +118,51 @@ The comment should be engaging, professional, and limited to {max_length} charac
     except Exception as e:
         print(f"Error generating comment: {e}")
         return "Error generating comment. Please try again."
+    
+    
+def suggest_reply(conversation, max_length=150):
+    """
+    Generates a suggested reply for Adamya Kumar based on the conversation context.
 
+    Parameters:
+        conversation (list): A list of dictionaries containing the conversation messages.
+        max_length (int): Maximum length of the suggested reply.
+
+    Returns:
+        str: Suggested reply for Adamya Kumar.
+    """
+    try:
+        # Combine conversation history for context
+        conversation_context = "\n".join(
+            [f"{msg['name']}: {msg['message']}" for msg in conversation]
+        )
+
+        # OpenAI API call to generate a reply
+        response = openai.chat.completions.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are a professional LinkedIn assistant."},
+                {
+                    "role": "user",
+                    "content": f"""
+Based on the following conversation, generate a professional and engaging reply from Adamya Kumar:
+Conversation History:
+{conversation_context}
+
+The reply should be thoughtful, relevant, and limited to {max_length} characters.
+"""
+                },
+            ],
+        )
+
+        # Extract the generated reply
+        suggested_reply = response.choices[0].message.content.strip()
+        print(f"Suggested Reply: {suggested_reply}")
+        return suggested_reply
+
+    except Exception as e:
+        print(f"Error generating reply: {e}")
+        return "Error generating reply. Please try again."
 def analyze_post_data(post_content, existing_comments, max_length=150):
     """
     Analyzes a LinkedIn post, categorizes it, and generates a comment.
