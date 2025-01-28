@@ -22,7 +22,7 @@ def create_video(request):
         print(f"{video}")
         return Response({
             'status': 'success',
-            'video_file': "video.video_file"
+            'video_file': f"{video}"
         }, status=201)
     return Response(serializer.errors, status=400)
 

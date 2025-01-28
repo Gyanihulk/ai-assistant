@@ -12,7 +12,8 @@ def generate_image(prompt):
         model = "dall-e-2",
         prompt = prompt,
         n = 1,
-        size="256x256"
+        # size="256x256"
+        size="1024x1024"
         )
     print(f"{response}")
     image_url = response.data[0].url

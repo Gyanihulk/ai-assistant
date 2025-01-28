@@ -43,7 +43,7 @@ class VideoGenerationSerializer(serializers.Serializer):
             local_image_path = os.path.join("/app/data", image_filename)  
 
             # Upload to Cloudinary and get the Cloudinary URL
-            cloudinary_url = upload_image_to_cloudinary(image_url, image_filename)
+            cloudinary_url = upload_image_to_cloudinary(image_url, local_image_path)
             # print(f"Generated prompt: {prompt}")
             # print(f"Uploaded to Cloudinary: {cloudinary_url}")
             # Save the Cloudinary URL instead of the local image URL

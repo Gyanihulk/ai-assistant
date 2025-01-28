@@ -48,9 +48,4 @@ def generate_prompts(topic, num_prompts=3):
 
 
 
-# Example usage
-if __name__ == "__main__":
-    topic = "Ganga Mata"
-    prompts = generate_prompts(topic, num_prompts=3)
-    for i, prompt in enumerate(prompts, 1):
-        print(f"Prompt {i}: {prompt}")
+
